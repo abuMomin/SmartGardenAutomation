@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Current</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="nav">
+      <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img
+              src="images/logo.png"
+              width="45"
+              alt=""
+              class="d-inline-block align-middle mr-2"
+            />Smart Water Pump</a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasDarkNavbar"
+            aria-controls="offcanvasDarkNavbar"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="offcanvas offcanvas-end text-bg-dark"
+            tabindex="-1"
+            id="offcanvasDarkNavbar"
+            aria-labelledby="offcanvasDarkNavbarLabel"
+          >
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
+                Smart Pump
+              </h5>
+              <button
+                type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    aria-current="page"
+                    href="index.html"
+                    >Home</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="current_2.html">Current</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="Statistics.html">Statistics</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <!-- FORM OF VALUE SHOWING from FIREBASE DATABASE -->
+    <div>
+      <form>
+        <h1>Current Garden Forecast</h1>
+        <div class="row mb-3" id="temp">
+          <label for="inputEmail3" class="col-sm-2 col-form-label"
+            >Temperature
+          </label>
+          <div class="col-sm-10">
+            <input
+              type="text"
+              value="28.2"
+              class="form-control"
+              id="inputEmail3"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3" id="hum">
+          <label for="inputEmail3" class="col-sm-2 col-form-label"
+            >Humidity
+          </label>
+          <div class="col-sm-10">
+            <input
+              type="text"
+              value="76.00%"
+              class="form-control"
+              id="inputEmail3"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3" id="mois">
+          <label for="inputPassword3" class="col-sm-2 col-form-label"
+            >Soil Moisture
+          </label>
+          <div class="col-sm-10">
+            <input
+              type="text"
+              value="2000"
+              class="form-control"
+              id="inputPassword3"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3" id="soil_stat">
+          <label for="inputPassword3" class="col-sm-2 col-form-label">
+            Soil Status
+          </label>
+          <div class="col-sm-10">
+            <input
+              type="text"
+              value="Soil moisture is perfect"
+              class="form-control"
+              id="inputPassword3"
+            />
+          </div>
+        </div>
+
+        <!-- <div class="btn" id="waterBtn">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-toggle="button"
+            aria-pressed="false"
+            autocomplete="off"
+          >
+            Water Now
+          </button> -->
+        </div>
+      </form>
+    </div>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js"></script>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-analytics.js";
+
+      const firebaseConfig = {
+        apiKey: "ipiIBYlZKeEjUo19QpY2ac8OLFiqMr0v19QAIASQ",
+        authDomain: "cn-project-87b83.firebaseapp.com",
+        databaseURL:
+          "https://cn-project-87b83-default-rtdb.asia-southeast1.firebasedatabase.app/",
+        projectId: "cn-project-87b83",
+        storageBucket: "cn-project-87b83.appspot.com",
+        messagingSenderId: "765456797868",
+        appId: "1:765456797868:web:7617c2015e612c28268f09",
+        measurementId: "G-M06Z5JFVTK",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+
+      // Reference
+      var temp = document.getElementById("temp");
+      var hum = document.getElementById("hum");
+      var mois = document.getElementById("mois");
+      var soil_stat = document.getElementById("soil_stat");
+      var waterbtn = document.getElementById("waterBtn");
+
+      var dbref_1 = firebase.database().ref().child("temp");
+      var dbref_2 = firebase.database().ref().child("hum");
+      var dbref_3 = firebase.database().ref().child("soil");
+      var dbref_4 = firebase.database().ref().child("status");
+
+      dbref_1.on("value", (snap) => (temp = sanp.val());
+      dbref_2.on("value", (snap) => (hum = sanp.val());
+      dbref_1.on("value", (snap) => (temp = sanp.val()));
+      dbref_1.on("value", (snap) => (temp = sanp.val()));
+
+      // waterbtn.addEventListener("click", func());
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
